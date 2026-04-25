@@ -15,7 +15,7 @@ const LogIn = () => {
     //?handler singIn user;
     const handleSignInUser = (e) => {
         e.preventDefault();
-        console.log(emailValue, passwordValue);
+        // console.log(emailValue, passwordValue);
         //! success & error message resert;
         setSuccess('')
         setError(false)
@@ -23,6 +23,25 @@ const LogIn = () => {
             .then(res => {
                 console.log(res.user);
                 setSuccess(res.user)
+                //Todo:user data post db;
+                const userData = {
+                    name:res.user.displayName,
+                    email:res.user.email,
+                    photo:res.user.photoURL
+
+                }
+                fetch('http://localhost:5000/usersInfo2',{
+                    method:'POST',
+                    headers:{
+                        'content-type':'application/json'
+                    },
+                    body:JSON.stringify(userData)
+                })
+                .then(res=>res.json())
+                .then(data=>{
+                    console.log('After data save database',data);
+                })
+
             }).catch(error => {
                 console.log(error.message);
                 setError(error.message)

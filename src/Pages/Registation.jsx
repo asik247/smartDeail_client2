@@ -2,6 +2,8 @@ import React, { use, useState } from 'react';
 import { Link } from 'react-router';
 import useMyHook from '../Hooks/useMyHook';
 import { AuthContext } from '../Context/AuthContext';
+import {updateProfile } from "firebase/auth";
+
 
 const Registation = () => {
     //! AuthProvider get resistationUser;
@@ -9,6 +11,7 @@ const Registation = () => {
     // ! Custom hook get data;
    const [nameValue,handleNameChange] = useMyHook('')
    const [emailValue,handleEmailChange] = useMyHook('')
+   const [photoValue,handlePhotoChange] = useMyHook('')
    const [passwordValue,handlePasswordChange] = useMyHook('')
    //?Success & error show state hre;
    const [success,setSuccess] = useState('');
@@ -24,6 +27,13 @@ const Registation = () => {
     .then(res=>{
         console.log(res.user);
         setSuccess(res.user)
+        //ToDo: update profile;
+        const newInfo = {
+            displayName:nameValue,
+            photoURL:photoValue
+        }
+        //Todo: update using firebase manage auth;
+       updateProfile(res.user,newInfo)
     }).catch(error=>{
         console.log(error.message);
         setError(error.message)
@@ -47,6 +57,9 @@ const Registation = () => {
                                 {/* Email field */}
                                 <label className="label">Email</label>
                                 <input type="email" value={emailValue} onChange={handleEmailChange} className="input" placeholder="Email" />
+                                {/* Photo url */}
+                                <label className="label">Photo</label>
+                                <input type="text" value={photoValue} onChange={handlePhotoChange} className="input" placeholder="PhotoURL" />
                                 <label className="label">Password</label>
                                 <input type="password" value={passwordValue} onChange={handlePasswordChange} className="input" placeholder="Password" />
                             
