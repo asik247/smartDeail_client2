@@ -1,7 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 const Product = ({ singleP }) => {
-    const { title, price_min, price_max, image } = singleP;
+    const { title, price_min, price_max, image,_id } = singleP;
 
     return (
         <div style={{
@@ -37,7 +38,7 @@ const Product = ({ singleP }) => {
                     ৳{price_min.toLocaleString()} – ৳{price_max.toLocaleString()}
                 </p>
 
-                <button style={{
+                <Link to={`/details2/${_id}`} style={{
                     width: '100%',
                     padding: '10px',
                     background: '#1d4ed8',
@@ -49,7 +50,7 @@ const Product = ({ singleP }) => {
                     cursor: 'pointer',
                 }}>
                     View Details
-                </button>
+                </Link>
             </div>
         </div>
     );
