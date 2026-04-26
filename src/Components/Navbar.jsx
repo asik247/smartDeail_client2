@@ -1,6 +1,23 @@
-import React from 'react';
+import React, { use } from 'react';
 import { Link, NavLink } from 'react-router';
+import { AuthContext } from '../Context/AuthContext';
 const Navbar = () => {
+    const { logOutUser, loading, user } = use(AuthContext);
+    console.log('currentUser',user);
+    if(loading){
+        return <p>Lodinggggggggg.</p>
+    }
+    // console.log(logOutUser);
+    //! handlerLogOut;
+    const handlerLogOut = () => {
+        console.log('handlerLogOutclicked');
+        logOutUser()
+            .then(res => {
+                console.log(res.user);
+            }).catch(error => {
+                console.log(error.message);
+            })
+    }
     const links = <>
         <li><NavLink to={'/'}>Home</NavLink></li>
         <li><NavLink to={'/allProducts'}>AllProducts</NavLink></li>
@@ -29,7 +46,9 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="navbar-end">
-                <Link to={'/auth'}>LogIn</Link>
+                {
+                    user ? <Link onClick={handlerLogOut}>LogOut</Link> : <Link to={'/auth'}>LogIn</Link>
+                }
             </div>
         </div>
     );

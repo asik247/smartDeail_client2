@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useLoaderData } from 'react-router';
 
 const DetailsPages = () => {
     const detailsData = useLoaderData();
+    //? handleRef using modal relative code here;
+    const handleModalRef = useRef(null);
+    //? modal open using ref;
+    const handleModalOpen = () => {
+        handleModalRef.current.showModal()
+    }
 
     const {
         title,
@@ -21,15 +27,15 @@ const DetailsPages = () => {
 
     return (
         <div className="max-w-6xl mx-auto p-4">
-            
+
             {/* Product Section */}
             <div className="grid md:grid-cols-2 gap-8 bg-base-100 shadow-xl rounded-2xl p-6">
-                
+
                 {/* Image */}
                 <div>
-                    <img 
-                        src={image} 
-                        alt={title} 
+                    <img
+                        src={image}
+                        alt={title}
                         className="w-full h-[350px] object-cover rounded-xl"
                     />
                 </div>
@@ -51,18 +57,30 @@ const DetailsPages = () => {
                         <p><span className="font-semibold">📦 Condition:</span> {condition}</p>
                         <p><span className="font-semibold">⏳ Usage:</span> {usage}</p>
                     </div>
-
-                    <button className="btn btn-primary w-full mt-4">
+                    {/* Modal cod hre */}
+                    <button onClick={handleModalOpen} className="btn btn-primary w-full mt-4">
                         Place Bid This Product!
                     </button>
+                    <dialog ref={handleModalRef} id="my_modal_5" className="modal modal-bottom sm:modal-middle">
+                        <div className="modal-box">
+                            <h3 className="font-bold text-lg">Bids This Products!</h3>
+                            <p className="py-4">Press ESC key or click the button below to close</p>
+                            <div className="modal-action">
+                                <form method="dialog">
+                                    {/* if there is a button in form, it will close the modal */}
+                                    <button className="btn">Close</button>
+                                </form>
+                            </div>
+                        </div>
+                    </dialog>
                 </div>
             </div>
 
             {/* Seller Section */}
             <div className="mt-8 bg-base-100 shadow-xl rounded-2xl p-6 flex items-center gap-4">
-                <img 
-                    src={seller_image} 
-                    alt={seller_name} 
+                <img
+                    src={seller_image}
+                    alt={seller_name}
                     className="w-16 h-16 rounded-full border"
                 />
 
