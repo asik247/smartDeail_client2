@@ -190,7 +190,7 @@ const DetailsPages = () => {
                                 <div className="flex items-center gap-3">
                                     <div className="avatar">
                                         <div className="mask mask-squircle h-12 w-12">
-                                            <img src={bid.buyer_image} alt="" />
+                                            <img src={bid?.buyer_image} alt="" />
                             
                                         </div>
                                     </div>

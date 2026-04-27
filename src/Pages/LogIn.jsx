@@ -27,7 +27,7 @@ const LogIn = () => {
                 const userData = {
                     name: res.user.displayName,
                     email: res.user.email,
-                    photo: res.user.photoURL
+                    photo: res.user?.photoURL
 
                 }
                 fetch('http://localhost:5000/usersInfo2', {
