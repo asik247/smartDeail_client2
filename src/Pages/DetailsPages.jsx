@@ -1,14 +1,11 @@
-import React, { useRef } from 'react';
+import React, { use, useRef } from 'react';
 import { useLoaderData } from 'react-router';
+import { AuthContext } from '../Context/AuthContext';
 
 const DetailsPages = () => {
     const detailsData = useLoaderData();
-    //? handleRef using modal relative code here;
-    const handleModalRef = useRef(null);
-    //? modal open using ref;
-    const handleModalOpen = () => {
-        handleModalRef.current.showModal()
-    }
+    //Todo: get currentUser
+    const { user } = use(AuthContext);
 
     const {
         title,
@@ -22,9 +19,44 @@ const DetailsPages = () => {
         seller_name,
         seller_image,
         seller_contact,
-        category
+        category,
+        _id: productId
     } = detailsData;
 
+    //? handleRef using modal relative code here;
+    const handleModalRef = useRef(null);
+    //? modal open using ref;
+    const handleModalOpen = () => {
+        handleModalRef.current.showModal()
+    }
+    //?handleBidPostDb code here;
+    const handleBidPostDb = (e) => {
+        e.preventDefault();
+        const name = e.target.name.value;
+        const email = e.target.email.value;
+        const bid = e.target.bid.value;
+        // console.log('handleBidPostDb send data db',name,email,bid,productId);
+        const newBids = {
+            product: productId,
+            buyer_name: name,
+            buyer_email: email,
+            bid_price: bid,
+            status: 'pending'
+        }
+        // console.log(newBids);
+        // Todo:post bids in DB;
+        fetch('http://localhost:5000/bids2', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(newBids)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+            })
+    }
     return (
         <div className="max-w-6xl mx-auto p-4">
 
@@ -59,22 +91,30 @@ const DetailsPages = () => {
                     </div>
                     {/* Modal cod hre */}
                     <button onClick={handleModalOpen} className="btn btn-primary w-full mt-4">
-                       I Want to Buy This Product!
+                        I Want to Buy This Product!
                     </button>
                     <dialog ref={handleModalRef} id="my_modal_5" className="modal modal-bottom sm:modal-middle">
                         <div className="modal-box">
                             <h3 className="font-bold text-lg">Give the best offer!</h3>
-                            {/* input field */}
-                            <label className="label">Name</label>
-                            <input type="text" className="input" placeholder="Name" />
-                            <br /><br />
-                            {/* Email field */}
-                            <label className="label">Email</label>
-                            <input type="email" className="input" placeholder="Email" />
-                            <br /><br />
-                            {/* bid price input field */}
-                            <label className="label">Price</label>
-                            <input type="text" className="input" placeholder="Price" />
+                            <form onSubmit={handleBidPostDb}>
+                                <fieldset className="fieldset">
+                                    {/* Name */}
+                                    <label className="label">Name</label>
+                                    <input type="text" name='name' readOnly defaultValue={user?.displayName} className="input" placeholder="Name" />
+                                    {/* Email */}
+                                    <label className="label">Email</label>
+                                    <input type="email" className="input"
+                                        name='email'
+                                        readOnly
+                                        defaultValue={user?.email}
+                                        placeholder="Email" />
+                                    {/* Bids */}
+                                    <label className="label">Bids</label>
+                                    <input type="text" name='bid' className="input" placeholder="Bids" />
+
+                                    <button className="btn btn-neutral mt-4">Place Your Bids!</button>
+                                </fieldset>
+                            </form>
                             <div className="modal-action">
                                 <form method="dialog">
                                     {/* if there is a button in form, it will close the modal */}
