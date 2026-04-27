@@ -25,22 +25,22 @@ const LogIn = () => {
                 setSuccess(res.user)
                 //Todo:user data post db;
                 const userData = {
-                    name:res.user.displayName,
-                    email:res.user.email,
-                    photo:res.user.photoURL
+                    name: res.user.displayName,
+                    email: res.user.email,
+                    photo: res.user.photoURL
 
                 }
-                fetch('http://localhost:5000/usersInfo2',{
-                    method:'POST',
-                    headers:{
-                        'content-type':'application/json'
+                fetch('http://localhost:5000/usersInfo2', {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json'
                     },
-                    body:JSON.stringify(userData)
+                    body: JSON.stringify(userData)
                 })
-                .then(res=>res.json())
-                .then(data=>{
-                    console.log('After data save database',data);
-                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log('After data save database', data);
+                    })
 
             }).catch(error => {
                 console.log(error.message);

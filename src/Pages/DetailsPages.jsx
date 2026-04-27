@@ -59,12 +59,22 @@ const DetailsPages = () => {
                     </div>
                     {/* Modal cod hre */}
                     <button onClick={handleModalOpen} className="btn btn-primary w-full mt-4">
-                        Place Bid This Product!
+                       I Want to Buy This Product!
                     </button>
                     <dialog ref={handleModalRef} id="my_modal_5" className="modal modal-bottom sm:modal-middle">
                         <div className="modal-box">
-                            <h3 className="font-bold text-lg">Bids This Products!</h3>
-                            <p className="py-4">Press ESC key or click the button below to close</p>
+                            <h3 className="font-bold text-lg">Give the best offer!</h3>
+                            {/* input field */}
+                            <label className="label">Name</label>
+                            <input type="text" className="input" placeholder="Name" />
+                            <br /><br />
+                            {/* Email field */}
+                            <label className="label">Email</label>
+                            <input type="email" className="input" placeholder="Email" />
+                            <br /><br />
+                            {/* bid price input field */}
+                            <label className="label">Price</label>
+                            <input type="text" className="input" placeholder="Price" />
                             <div className="modal-action">
                                 <form method="dialog">
                                     {/* if there is a button in form, it will close the modal */}
