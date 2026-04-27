@@ -78,7 +78,11 @@ const DetailsPages = () => {
                         timer: 1500
                     });
                 }
-                console.log(data);
+                console.log('db thke id ase oii ta ',data);
+                newBids._id = data.insertedId;
+                const newBidsDB = [...bids,newBids];
+                newBidsDB.sort((a,b)=>b.bid_price-a.bid_price)
+                setBids(newBidsDB)
             })
     }
     return (
