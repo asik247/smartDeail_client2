@@ -1,4 +1,4 @@
-import React, { use, useRef } from 'react';
+import React, { use, useEffect, useRef, useState } from 'react';
 import { useLoaderData } from 'react-router';
 import { AuthContext } from '../Context/AuthContext';
 import Swal from 'sweetalert2';
@@ -7,6 +7,7 @@ const DetailsPages = () => {
     const detailsData = useLoaderData();
     //Todo: get currentUser
     const { user } = use(AuthContext);
+    const [bids, setBids] = useState([])
 
     const {
         title,
@@ -23,7 +24,17 @@ const DetailsPages = () => {
         category,
         _id: productId
     } = detailsData;
+    // console.log(productId);
+    //Todo: load id useing data and post db then return data client site;
 
+    useEffect(() => {
+        fetch(`http://localhost:5000/bids2/${productId}`)
+            .then(res => res.json())
+            .then(data => {
+                console.log('this products bids list', data);
+                setBids(data)
+            })
+    }, [productId])
     //? handleRef using modal relative code here;
     const handleModalRef = useRef(null);
     //? modal open using ref;
@@ -41,7 +52,9 @@ const DetailsPages = () => {
             product: productId,
             buyer_name: name,
             buyer_email: email,
+            buyer_image:user?.photoURL,
             bid_price: bid,
+
             status: 'pending'
         }
         // console.log(newBids);
@@ -139,7 +152,7 @@ const DetailsPages = () => {
 
             {/* Seller Section */}
             <div className="mt-8 bg-base-100 shadow-xl rounded-2xl p-6 flex items-center gap-4">
-                <img
+                {/* <img
                     src={seller_image}
                     alt={seller_name}
                     className="w-16 h-16 rounded-full border"
@@ -148,7 +161,53 @@ const DetailsPages = () => {
                 <div>
                     <h3 className="text-lg font-bold">{seller_name}</h3>
                     <p className="text-gray-500">{seller_contact}</p>
-                </div>
+                </div> */}
+               
+                
+            </div>
+            <div className="overflow-x-auto">
+                <table className="table">
+                    {/* head */}
+                    <thead>
+                        <tr>
+                            <th>SL.No</th>
+                            <th>Image</th>
+                            <th>Email</th>
+                            <th>Bid Price</th>
+                            <th>Your Choice</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      
+                     {
+                        bids.map((bid,index)=>   <tr key={bid._id}>
+                            <td>{index+1}</td>
+                            <td>
+                                <div className="flex items-center gap-3">
+                                    <div className="avatar">
+                                        <div className="mask mask-squircle h-12 w-12">
+                                            <img src={bid.buyer_image} alt="" />
+                            
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                            <td>
+                               {bid.buyer_email}
+                            </td>
+                            <td>{bid.bid_price}</td>
+                            <th>
+                                <button className="btn btn-ghost btn-xs">details</button>
+                            </th>
+                        </tr>)
+                     }
+                        
+                       
+                      
+                    </tbody>
+                   
+                </table>
             </div>
 
         </div>
@@ -156,3 +215,11 @@ const DetailsPages = () => {
 };
 
 export default DetailsPages;
+/**{
+    "_id": "69eefbd18e7fd47d94c6c8ff",
+    "product": "664a1b2c3d4e5f6789abcd29",
+    "buyer_name": "md asik",
+    "buyer_email": "rimon@gmail.com",
+    "bid_price": "2340",
+    "status": "pending"
+} */
