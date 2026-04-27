@@ -1,6 +1,7 @@
 import React, { use, useRef } from 'react';
 import { useLoaderData } from 'react-router';
 import { AuthContext } from '../Context/AuthContext';
+import Swal from 'sweetalert2';
 
 const DetailsPages = () => {
     const detailsData = useLoaderData();
@@ -54,6 +55,16 @@ const DetailsPages = () => {
         })
             .then(res => res.json())
             .then(data => {
+                if (data.insertedId) {
+                    handleModalRef.current.close()
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Your work has been saved",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
                 console.log(data);
             })
     }
