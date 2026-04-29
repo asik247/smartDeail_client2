@@ -8,6 +8,7 @@ import AuthLayout from "../Layout/AuthLayout";
 import Registation from "../Pages/Registation";
 import LogIn from "../Pages/LogIn";
 import DetailsPages from "../Pages/DetailsPages";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
     {
@@ -15,11 +16,11 @@ const router = createBrowserRouter([
             { index: true, Component: Home },
             { path: '/allProducts', Component: AllProducts },
             { path: '/myProducts', Component: MyProducts },
-            { path: '/myBids', Component: MyBids },
+            { path: '/myBids',element:<PrivateRoute><MyBids></MyBids></PrivateRoute>},
             {
                 path:'details2/:id',
                 loader:({params})=>fetch(`http://localhost:5000/products2/${params.id}`),
-                Component:DetailsPages
+                element:<PrivateRoute><DetailsPages></DetailsPages></PrivateRoute>
             }
         ]
     },

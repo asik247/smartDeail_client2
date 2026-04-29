@@ -3,17 +3,23 @@ import { AuthContext } from '../Context/AuthContext';
 
 const MyBids = () => {
     const { user } = use(AuthContext);
+    console.log('Client site token:-',user.accessToken);
+    console.log(user.email);
     const [myBid, setMyBid] = useState([]);
 
     useEffect(() => {
         if (user?.email) {
-            fetch(`http://localhost:5000/bids2?email=${user.email}`)
+            fetch(`http://localhost:5000/bids2?email=${user.email}`,{
+                headers:{
+                    authorization:`Bearer ${user.accessToken}`
+                }
+            })
                 .then(res => res.json())
                 .then(data => {
                     setMyBid(data);
                 });
         }
-    }, [user?.email]);
+    }, [user]);
 
     return (
         <div>

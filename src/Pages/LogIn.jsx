@@ -1,11 +1,15 @@
 import React, { use, useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import { AuthContext } from '../Context/AuthContext';
 import useMyHook from '../Hooks/useMyHook';
 
 const LogIn = () => {
     //! AuthProvider get signInUser;
     const { signInUser, logInGoogle } = use(AuthContext)
+    //?Location and useNavagete;
+    const location = useLocation();
+    const navegate = useNavigate();
+    console.log(location);
     // ! Custom hook get data;
     const [emailValue, handleEmailChange] = useMyHook('')
     const [passwordValue, handlePasswordChange] = useMyHook('')
@@ -52,6 +56,7 @@ const LogIn = () => {
         logInGoogle()
             .then(res => {
                 console.log(res.user);
+                navegate(location.state || '/')
             }).catch(error => {
                 console.log(error.message);
             })
