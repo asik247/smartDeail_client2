@@ -8,7 +8,7 @@ const PrivateRoute = ({ children }) => {
     if (loading) {
         return <p>Loding..</p>
     }
-    console.log(location);
+    // console.log(location);
     if (user) {
         return children;
     }
