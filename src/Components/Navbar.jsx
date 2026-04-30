@@ -3,8 +3,8 @@ import { Link, NavLink } from 'react-router';
 import { AuthContext } from '../Context/AuthContext';
 const Navbar = () => {
     const { logOutUser, loading, user } = use(AuthContext);
-    console.log('currentUser',user);
-    if(loading){
+    console.log('currentUser', user);
+    if (loading) {
         return <p>Lodinggggggggg.</p>
     }
     // console.log(logOutUser);
@@ -23,6 +23,9 @@ const Navbar = () => {
         <li><NavLink to={'/allProducts'}>AllProducts</NavLink></li>
         <li><NavLink to={'/myProducts'}>MyProducts</NavLink></li>
         <li><NavLink to={'/myBids'}>MyBids</NavLink></li>
+        {user &&
+            <li><NavLink to={'/createAProduct'}>Create A Product</NavLink></li>
+        }
     </>
     return (
         <div className="navbar bg-base-100 shadow-sm">
