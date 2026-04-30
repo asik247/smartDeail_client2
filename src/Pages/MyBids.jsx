@@ -125,10 +125,9 @@ const MyBids = () => {
 
     useEffect(() => {
         if (user?.email) {
-            setLoading(true);
             fetch(`http://localhost:5000/bids2?email=${user.email}`, {
                 headers: {
-                    authorization: `Bearer ${user.accessToken}`,
+                    authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
             })
                 .then((res) => res.json())

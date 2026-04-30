@@ -23,12 +23,35 @@ const AuthProvider = ({ children }) => {
     }
     //?logIn with google;
     const logInGoogle = () => {
-        return signInWithPopup(auth,provider)
+        return signInWithPopup(auth, provider)
     }
     //?  OnAuth state change here;
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser);
+            //! current user thakele server thake token dibe;
+            if (currentUser) {
+                const loggedUserInfo = {
+                    email: currentUser.email
+                }
+                fetch('http://localhost:5000/getToken', {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify(loggedUserInfo)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log('after give token', data.token);
+                        // ? setToken localStorge;
+                        localStorage.setItem('token', data.token);
+                    })
+            }
+            else {
+                localStorage.removeItem('token')
+
+            }
             setLoading(false)
         })
         return () => unsubscribe()
