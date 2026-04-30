@@ -1,5 +1,6 @@
 import React, { use, useEffect, useState } from 'react';
 import { AuthContext } from '../Context/AuthContext';
+import useAxiosSecure from '../Hooks/useAxiosSecure';
 
 const statusConfig = {
     pending: {
@@ -121,23 +122,32 @@ const StatusBadge = ({ status }) => {
 const MyBids = () => {
     const { user } = use(AuthContext);
     const [myBid, setMyBid] = useState([]);
+    const axiosSecureInstance = useAxiosSecure()
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (user?.email) {
-            fetch(`http://localhost:5000/bids2?email=${user.email}`, {
-                headers: {
-                    authorization: `Bearer ${localStorage.getItem('token')}`,
-                },
+        axiosSecureInstance.get(`/bids2?email=${user.email}`)
+            .then(data => {
+                setMyBid(data.data)
+                setLoading(false)
             })
-                .then((res) => res.json())
-                .then((data) => {
-                    setMyBid(data);
-                    setLoading(false);
-                })
-                .catch(() => setLoading(false));
-        }
-    }, [user]);
+    }, [user, axiosSecureInstance])
+
+    // useEffect(() => {
+    //     if (user?.email) {
+    //         fetch(`http://localhost:5000/bids2?email=${user.email}`, {
+    //             headers: {
+    //                 authorization: `Bearer ${localStorage.getItem('token')}`,
+    //             },
+    //         })
+    //             .then((res) => res.json())
+    //             .then((data) => {
+    //                 setMyBid(data);
+    //                 setLoading(false);
+    //             })
+    //             .catch(() => setLoading(false));
+    //     }
+    // }, [user]);
 
     const stats = {
         total: myBid.length,
