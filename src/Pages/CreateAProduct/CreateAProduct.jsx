@@ -1,13 +1,15 @@
 import React from 'react';
 import useMyHook from '../../Hooks/useMyHook';
-import { minimum } from 'firebase/firestore/pipelines';
-import axios from 'axios';
+// import { minimum } from 'firebase/firestore/pipelines';
+// import axios from 'axios';
 import useAuth from '../../Hooks/useAuth';
-import useAxios from '../../Hooks/useAxios';
+import useAxiosSecure from '../../Hooks/useAxiosSecure';
+// import useAxios from '../../Hooks/useAxios';
 
 const CreateAProduct = () => {
     const {user} = useAuth()
-    const axiosInstance = useAxios();
+    // const axiosInstance = useAxios();
+    const axiosSecureInstance = useAxiosSecure()
     const [nameValue, handleNameChange] = useMyHook('');
     const [imageValue, handleImageChange] = useMyHook('');
     const [minimumValue, handleMinimumValueChange] = useMyHook('');
@@ -40,7 +42,7 @@ const CreateAProduct = () => {
         //     .catch(error => {
         //         console.log(error.response?.data || error.message);
         //     });
-        axiosInstance.post('/createProductColl',creatNewProduct)
+        axiosSecureInstance.post('/createProductColl',creatNewProduct)
         .then(data=>{
             console.log(data.data);
         })
