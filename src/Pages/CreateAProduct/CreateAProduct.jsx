@@ -4,12 +4,14 @@ import useMyHook from '../../Hooks/useMyHook';
 // import axios from 'axios';
 import useAuth from '../../Hooks/useAuth';
 import useAxiosSecure from '../../Hooks/useAxiosSecure';
+
 // import useAxios from '../../Hooks/useAxios';
 
 const CreateAProduct = () => {
     const {user} = useAuth()
     // const axiosInstance = useAxios();
-    const axiosSecureInstance = useAxiosSecure()
+    const instanceSecure = useAxiosSecure()
+    
     const [nameValue, handleNameChange] = useMyHook('');
     const [imageValue, handleImageChange] = useMyHook('');
     const [minimumValue, handleMinimumValueChange] = useMyHook('');
@@ -47,6 +49,10 @@ const CreateAProduct = () => {
         // .then(data=>{
         //     console.log('after secure cll',data.data);
         // })
+        instanceSecure.post('/createProductColl',creatNewProduct)
+        .then(data=>{
+            console.log(data.data);
+        })
 
     }
     return (
