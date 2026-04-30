@@ -3,9 +3,11 @@ import useMyHook from '../../Hooks/useMyHook';
 import { minimum } from 'firebase/firestore/pipelines';
 import axios from 'axios';
 import useAuth from '../../Hooks/useAuth';
+import useAxios from '../../Hooks/useAxios';
 
 const CreateAProduct = () => {
     const {user} = useAuth()
+    const axiosInstance = useAxios();
     const [nameValue, handleNameChange] = useMyHook('');
     const [imageValue, handleImageChange] = useMyHook('');
     const [minimumValue, handleMinimumValueChange] = useMyHook('');
@@ -30,14 +32,18 @@ const CreateAProduct = () => {
         //     }
         //     console.log('after create A Product',data);
         // })
-        axios.post('http://localhost:5000/createProductColl', creatNewProduct)
-            .then(data => {
-                console.log(data.data);
+        // axios.post('http://localhost:5000/createProductColl', creatNewProduct)
+        //     .then(data => {
+        //         console.log(data.data);
                 
-            })
-            .catch(error => {
-                console.log(error.response?.data || error.message);
-            });
+        //     })
+        //     .catch(error => {
+        //         console.log(error.response?.data || error.message);
+        //     });
+        axiosInstance.post('/createProductColl',creatNewProduct)
+        .then(data=>{
+            console.log(data.data);
+        })
 
     }
     return (
