@@ -2,6 +2,7 @@ import React, { use, useEffect, useRef, useState } from 'react';
 import { useLoaderData } from 'react-router';
 import { AuthContext } from '../Context/AuthContext';
 import Swal from 'sweetalert2';
+import axios from 'axios';
 
 const DetailsPages = () => {
     const detailsData = useLoaderData();
@@ -26,19 +27,28 @@ const DetailsPages = () => {
     } = detailsData;
     // console.log(productId);
     //Todo: load id useing data and post db then return data client site;
-
+    //! axios use get/fetch data;
     useEffect(() => {
-        fetch(`http://localhost:5000/bids2/${productId}`, {
-            headers: {
-                authorization: `Bearer ${user.accessToken}`
-            }
+        axios.get(`http://localhost:5000/bids2/${productId}`)
+        .then(data=>{
+            console.log('after axios data',data);
+            setBids(data.data)
         })
-            .then(res => res.json())
-            .then(data => {
-                console.log('this products bids list', data);
-                setBids(data)
-            })
-    }, [productId, user])
+    }, [productId])
+    //?Normal fetch;
+    // useEffect(() => {
+    //     fetch(`http://localhost:5000/bids2/${productId}`, {
+    //         headers: {
+    //             authorization: `Bearer ${user.accessToken}`
+    //         }
+    //     })
+    //         .then(res => res.json())
+    //         .then(data => {
+    //             console.log('this products bids list', data);
+    //             setBids(data)
+    //         })
+    // }, [productId, user])
+
     //? handleRef using modal relative code here;
     const handleModalRef = useRef(null);
     //? modal open using ref;
