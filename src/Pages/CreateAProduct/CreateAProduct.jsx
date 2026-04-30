@@ -42,10 +42,11 @@ const CreateAProduct = () => {
         //     .catch(error => {
         //         console.log(error.response?.data || error.message);
         //     });
-        axiosSecureInstance.post('/createProductColl',creatNewProduct)
-        .then(data=>{
-            console.log(data.data);
-        })
+        //?axiosSecureInstance use;
+        // axiosSecureInstance.post('/createProductColl',creatNewProduct)
+        // .then(data=>{
+        //     console.log('after secure cll',data.data);
+        // })
 
     }
     return (
