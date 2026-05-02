@@ -10,7 +10,7 @@ import useAxiosSecure from '../../Hooks/useAxiosSecure';
 const CreateAProduct = () => {
     const {user} = useAuth()
     // const axiosInstance = useAxios();
-    const instanceSecure = useAxiosSecure()
+    const instance = useAxiosSecure()
     
     const [nameValue, handleNameChange] = useMyHook('');
     const [imageValue, handleImageChange] = useMyHook('');
@@ -21,35 +21,8 @@ const CreateAProduct = () => {
     const handleCreateAProduct = e => {
         e.preventDefault();
         const creatNewProduct = { nameValue, imageValue, minimumValue, maximumValue, numberValue, descriptionValue,email:user.email,seller_name:user.displayName };
-
-        // fetch('http://localhost:5000/createProductColl',{
-        //     method:'POST',
-        //     headers:{
-        //         'content-type':'application/json'
-        //     },
-        //     body:JSON.stringify(creatNewProduct)
-        // })
-        // .then(res=>res.json())
-        // .then(data=>{
-        //     if(data.insertedId){
-        //         alert('add product db')
-        //     }
-        //     console.log('after create A Product',data);
-        // })
-        // axios.post('http://localhost:5000/createProductColl', creatNewProduct)
-        //     .then(data => {
-        //         console.log(data.data);
-                
-        //     })
-        //     .catch(error => {
-        //         console.log(error.response?.data || error.message);
-        //     });
-        //?axiosSecureInstance use;
-        // axiosSecureInstance.post('/createProductColl',creatNewProduct)
-        // .then(data=>{
-        //     console.log('after secure cll',data.data);
-        // })
-        instanceSecure.post('/createProductColl',creatNewProduct)
+        //!useAxiosSecure hook;
+        instance.post('/createProductColl',creatNewProduct)
         .then(data=>{
             console.log(data.data);
         })

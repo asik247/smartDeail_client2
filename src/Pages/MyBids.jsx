@@ -122,33 +122,16 @@ const StatusBadge = ({ status }) => {
 const MyBids = () => {
     const { user } = use(AuthContext);
     const [myBid, setMyBid] = useState([]);
-    const axiosSecureInstance = useAxiosSecure()
+    const instance = useAxiosSecure()
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        axiosSecureInstance.get(`/bids2?email=${user.email}`)
+        instance.get(`/bids2?email=${user.email}`)
             .then(data => {
                 setMyBid(data.data)
                 setLoading(false)
             })
-    }, [user, axiosSecureInstance])
-
-    // useEffect(() => {
-    //     if (user?.email) {
-    //         fetch(`http://localhost:5000/bids2?email=${user.email}`, {
-    //             headers: {
-    //                 authorization: `Bearer ${localStorage.getItem('token')}`,
-    //             },
-    //         })
-    //             .then((res) => res.json())
-    //             .then((data) => {
-    //                 setMyBid(data);
-    //                 setLoading(false);
-    //             })
-    //             .catch(() => setLoading(false));
-    //     }
-    // }, [user]);
-
+    }, [user, instance])
     const stats = {
         total: myBid.length,
         accepted: myBid.filter((b) => b.status === 'accepted').length,

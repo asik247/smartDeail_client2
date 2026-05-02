@@ -3,8 +3,11 @@ import { useLoaderData } from 'react-router';
 import { AuthContext } from '../Context/AuthContext';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import useAxiosSecure from '../Hooks/useAxiosSecure';
 
 const DetailsPages = () => {
+    //?Intercetors;
+    const instanceSecure = useAxiosSecure()
     const detailsData = useLoaderData();
     //Todo: get currentUser
     const { user } = use(AuthContext);
@@ -28,13 +31,21 @@ const DetailsPages = () => {
     // console.log(productId);
     //Todo: load id useing data and post db then return data client site;
     //! axios use get/fetch data;
-    useEffect(() => {
-        axios.get(`http://localhost:5000/bids2/${productId}`)
+    // useEffect(() => {
+    //     axios.get(`http://localhost:5000/bids2/${productId}`)
+    //     .then(data=>{
+    //         console.log('after axios data',data);
+    //         setBids(data.data)
+    //     })
+    // }, [productId])
+    //!Intercepotrs;
+    useEffect(()=>{
+        instanceSecure.get(`/bids2/${productId}`)
         .then(data=>{
-            console.log('after axios data',data);
             setBids(data.data)
+            console.log(data.data);
         })
-    }, [productId])
+    },[instanceSecure,productId])
     //?Normal fetch;
     // useEffect(() => {
     //     fetch(`http://localhost:5000/bids2/${productId}`, {

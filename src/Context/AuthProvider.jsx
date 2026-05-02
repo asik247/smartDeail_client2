@@ -4,6 +4,7 @@ import { auth } from '../Firebase/firebase.init';
 import { AuthContext } from './AuthContext';
 import { GoogleAuthProvider } from "firebase/auth";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
+import useAxios from '../Hooks/useAxios';
 const provider = new GoogleAuthProvider();
 const AuthProvider = ({ children }) => {
     //!user state;
@@ -26,37 +27,30 @@ const AuthProvider = ({ children }) => {
         return signInWithPopup(auth, provider)
     }
     //?  OnAuth state change here;
+    const axiosInstance = useAxios()
     useEffect(() => {
+
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            setUser(currentUser);
+
             //! current user thakele server thake token dibe;
             if (currentUser) {
-                const loggedUserInfo = {
-                    email: currentUser.email
-                }
-                fetch('http://localhost:5000/getToken', {
-                    method: 'POST',
-                    headers: {
-                        'content-type': 'application/json'
-                    },
-                    body: JSON.stringify(loggedUserInfo)
-                })
-                    .then(res => res.json())
+                const userEmail = { email: currentUser.email }
+                axiosInstance.post('/getJWTToken', userEmail)
                     .then(data => {
-                        console.log('after give token', data.token);
-                        // ? setToken localStorge;
-                        localStorage.setItem('token', data.token);
+                        
+                        console.log('Token get jwt:-', data.data);
+                        localStorage.setItem('token',data.data.token)
                     })
             }
-            else {
+            else{
                 localStorage.removeItem('token')
-
             }
+            setUser(currentUser);
             setLoading(false)
         })
         return () => unsubscribe()
 
-    }, [])
+    }, [axiosInstance])
     //? singOut + onAthState change;
     //?userInfo store;
     const userInfo = {
